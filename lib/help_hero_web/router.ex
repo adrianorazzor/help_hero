@@ -20,50 +20,19 @@ defmodule HelpHeroWeb.Router do
   scope "/", HelpHeroWeb do
     pipe_through :browser
 
-    # Conversations
-    live "/conversations", ConversationLive.Index, :index
-    live "/conversations/new", ConversationLive.Index, :new
-    live "/conversations/:id/edit", ConversationLive.Index, :edit
-    live "/conversations/:id", ConversationLive.Show, :show
-    live "/conversations/:id/show/edit", ConversationLive.Show, :edit
-
-    # Messages
-    live "/messages", MessageLive.Index, :index
-    live "/messages/new", MessageLive.Index, :new
-    live "/messages/:id/edit", MessageLive.Index, :edit
-    live "/messages/:id", MessageLive.Show, :show
-    live "/messages/:id/show/edit", MessageLive.Show, :edit
-
-    # Contacts
-    live "/contacts", ContactLive.Index, :index
-    live "/contacts/new", ContactLive.Index, :new
-    live "/contacts/:id/edit", ContactLive.Index, :edit
-    live "/contacts/:id", ContactLive.Show, :show
-    live "/contacts/:id/show/edit", ContactLive.Show, :edit
-
-
-    live "/companies", CompanyLive.Index, :index
-    live "/companies/new", CompanyLive.Index, :new
-    live "/companies/:id/edit", CompanyLive.Index, :edit
-    live "/companies/:id", CompanyLive.Show, :show
-    live "/companies/:id/show/edit", CompanyLive.Show, :edit
-
-    # Tags
-    live "/tags", TagLive.Index, :index
-    live "/tags/new", TagLive.Index, :new
-    live "/tags/:id/edit", TagLive.Index, :edit
-    live "/tags/:id", TagLive.Show, :show
-    live "/tags/:id/show/edit", TagLive.Show, :edit
-
-
-
     get "/", PageController, :home
+
+
+
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", HelpHeroWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", HelpHeroWeb do
+    pipe_through :api
+
+    post "/webhook/whatsapp", WebhookController, :create
+    ##resources "/webhooks", WebhookController, except: [:new, :edit]
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:help_hero, :dev_routes) do
@@ -105,6 +74,41 @@ defmodule HelpHeroWeb.Router do
       on_mount: [{HelpHeroWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+
+       # Conversations
+    live "/conversations", ConversationLive.Index, :index
+    live "/conversations/new", ConversationLive.Index, :new
+    live "/conversations/:id/edit", ConversationLive.Index, :edit
+    live "/conversations/:id", ConversationLive.Show, :show
+    live "/conversations/:id/show/edit", ConversationLive.Show, :edit
+
+    # Messages
+    live "/messages", MessageLive.Index, :index
+    live "/messages/new", MessageLive.Index, :new
+    live "/messages/:id/edit", MessageLive.Index, :edit
+    live "/messages/:id", MessageLive.Show, :show
+    live "/messages/:id/show/edit", MessageLive.Show, :edit
+
+    # Contacts
+    live "/contacts", ContactLive.Index, :index
+    live "/contacts/new", ContactLive.Index, :new
+    live "/contacts/:id/edit", ContactLive.Index, :edit
+    live "/contacts/:id", ContactLive.Show, :show
+    live "/contacts/:id/show/edit", ContactLive.Show, :edit
+
+
+    live "/companies", CompanyLive.Index, :index
+    live "/companies/new", CompanyLive.Index, :new
+    live "/companies/:id/edit", CompanyLive.Index, :edit
+    live "/companies/:id", CompanyLive.Show, :show
+    live "/companies/:id/show/edit", CompanyLive.Show, :edit
+
+    # Tags
+    live "/tags", TagLive.Index, :index
+    live "/tags/new", TagLive.Index, :new
+    live "/tags/:id/edit", TagLive.Index, :edit
+    live "/tags/:id", TagLive.Show, :show
+    live "/tags/:id/show/edit", TagLive.Show, :edit
     end
   end
 
