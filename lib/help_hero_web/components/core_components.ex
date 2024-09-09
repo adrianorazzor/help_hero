@@ -17,7 +17,7 @@ defmodule HelpHeroWeb.CoreComponents do
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
-  import HelpHeroWeb.Gettext
+  use Gettext, backend: HelpHeroWeb.Gettext
 
   @doc """
   Renders a modal.

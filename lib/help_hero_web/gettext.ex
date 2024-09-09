@@ -20,5 +20,5 @@ defmodule HelpHeroWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :help_hero
+  use Gettext.Backend, otp_app: :help_hero
 end

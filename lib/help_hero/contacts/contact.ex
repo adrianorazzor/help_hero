@@ -15,6 +15,6 @@ defmodule HelpHero.Contacts.Contact do
   def changeset(contact, attrs) do
     contact
     |> cast(attrs, [:name, :phone_number])
-    |> validate_required([:name, :phone_number])
+    |> validate_required([:phone_number])
   end
 end

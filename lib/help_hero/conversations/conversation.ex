@@ -15,7 +15,9 @@ defmodule HelpHero.Conversations.Conversation do
   @doc false
   def changeset(conversation, attrs) do
     conversation
-    |> cast(attrs, [:status])
-    |> validate_required([:status])
+    |> cast(attrs, [:status, :assigned_to_id, :contact_id])
+    |> validate_required([:status, :contact_id])
+    |> foreign_key_constraint(:assigned_to_id)
+    |> foreign_key_constraint(:contact_id)
   end
 end

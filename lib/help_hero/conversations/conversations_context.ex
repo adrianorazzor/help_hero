@@ -9,14 +9,25 @@ defmodule HelpHero.Conversations do
 
   alias HelpHero.Conversations.Conversation
 
-  def create_message(conversation, attrs \\ %{}) do
+  def subscribe do
+    Phoenix.PubSub.subscribe(HelpHero.PubSub, "conversations")
+  end
+
+  def broadcast({:ok, conversation}, event) do
+    Phoenix.PubSub.broadcast(HelpHero.PubSub, "conversations", {event, conversation})
+    {:ok, conversation}
+  end
+
+  def broadcast({:error, _reason} = error, _event), do: error
+
+  def create_message(%Conversation{} = conversation, attrs \\ %{}) do
     %Message{}
     |> Message.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:conversation, conversation)
     |> Repo.insert()
   end
 
-  def create_or_update_conversation(contact_id, message) do
+  def create_or_update_conversation(contact_id, message_body) do
     conversation =
       Conversation
       |> where([c], c.contact_id == ^contact_id and c.status != :resolved)
@@ -31,8 +42,8 @@ defmodule HelpHero.Conversations do
       end
 
     with {:ok, conversation} <- conversation,
-         {:ok, _message} <- create_message(conversation, %{body: message, sender: "customer"}) do
-      {:ok, conversation}
+         {:ok, _message} <- create_message(conversation, %{body: message_body, sender: "customer"}) do
+      broadcast({:ok, conversation}, :conversation_updated)
     else
       error -> error
     end

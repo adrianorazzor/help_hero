@@ -14,14 +14,11 @@ defmodule HelpHeroWeb.WebhookController do
   end
 
   def create(conn, params) do
-    # Extract WhatsApp message details from params
     message = params["Body"]
     sender = params["From"]
 
-    # Create or update conversation
     with {:ok, contact} <- Contacts.find_or_create_by_phone(sender),
          {:ok, _conversation} <- Conversations.create_or_update_conversation(contact.id, message) do
-      # Log the webhook (optional, but can be useful for debugging)
       {:ok, webhook} = Webhooks.create_webhook(%{
         message: message,
         sender: sender
