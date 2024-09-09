@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :help_hero, HelpHero.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "root",
   hostname: "localhost",
   database: "help_hero_dev",
   stacktrace: true,
